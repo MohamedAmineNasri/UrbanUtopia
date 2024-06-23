@@ -3,6 +3,8 @@ import PropertyDropdown from './PropertyDropdown'
 import PriceRangeDropdown from './PriceRangeDropdown'
 
 import { RiSearch2Line } from 'react-icons/ri'
+import { useContext } from 'react'
+import { HouseContext } from './HouseContext'
 
 const Search = () => {
   return (
