@@ -28,6 +28,10 @@ const HouseContextProvider = ({ children }) => {
     const uniqueProperties = ['Location (any)', ...new Set(allProperties)]
     setProperties(uniqueProperties)
   },[])
+
+  const handleClick = () => {
+    console.log("clicked")
+  }
   return (
     <HouseContext.Provider value={{
       houses,
@@ -43,7 +47,8 @@ const HouseContextProvider = ({ children }) => {
       price,
       setPrice,
       loading,
-      setLoading
+      setLoading,
+      handleClick
     }}>{children}</HouseContext.Provider>
   )
 }
