@@ -1,6 +1,6 @@
 
-import { useState, useEffect } from "react"
-import { RiMapPinLine, RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri"
+import { useState } from "react"
+import { RiHome5Line, RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri"
 
 import { Menu } from "@headlessui/react"
 import { useContext } from 'react'
@@ -10,13 +10,12 @@ const CountryDropdown = () => {
   const {country, 
     setCountry, countries} = useContext(HouseContext)
 
-    console.log(countries)
     const [isOpen, setIsOpen] = useState(false)
   return (
     <Menu as='div' className='dropdown relative'>
       <Menu.Button onClick={() => setIsOpen(!isOpen)}
         className='dropdown-btn w-full text-left'>
-        <RiMapPinLine 
+        <RiHome5Line 
           className="dropdown-icon-primary"
         />
         <div className="text-[15px] font-medium leading-tight">
@@ -25,9 +24,9 @@ const CountryDropdown = () => {
         </div>
           {
             isOpen ? (
-              <RiArrowDownSLine className="dropdown-icon-secondary" />
-            ) : (
               <RiArrowUpSLine className="dropdown-icon-secondary" />
+            ) : (
+              <RiArrowDownSLine className="dropdown-icon-secondary" />
             )
           }
       </Menu.Button>
