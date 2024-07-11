@@ -5,6 +5,8 @@ import Footer from "./components/Footer"
 
 import Home from "./pages/Home"
 import PropertyDetails from "./pages/PropertyDetails"
+import Login from './pages/Login'
+import SignUp from './pages/SignUp'
 const App = () => {
 
   return (
@@ -13,6 +15,8 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />}/>
         <Route path='/property/:id' element={<PropertyDetails />}/>
+        <Route path='/login' element={<Login />}/>
+        <Route path='/signup' element={<SignUp />}/>
       </Routes>
       <Footer /> 
     </div>
