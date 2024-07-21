@@ -1,13 +1,22 @@
 
 import {Link} from 'react-router-dom'
 import Logo from '../assets/img/logo.svg'
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { IoIosNotificationsOutline } from "react-icons/io";
 import { useState } from 'react';
 import { Transition } from '@headlessui/react';
+import axios from "axios"
 
 
 const Header = ({user}) => {
+  const logout = async () => {
+    try {
+      await axios.get('http://localhost:5000/auth/logout', { withCredentials: true });
+      window.location.reload();
+    } catch (error) {
+      console.error('Error logging out:', error);
+    }
+  };
+  
+
   const [userDropDownIsOpen, setUserDropDownIsOpen] = useState(false);
   const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
   return (
@@ -18,7 +27,7 @@ const Header = ({user}) => {
           {
             user ? (
                 <>
-                  <Link className='hover:text-violet-900 transtion'  to="/">Log Out</Link>
+                  <Link className='hover:text-violet-900 transtion' onClick={logout} >Log Out</Link>
                   <div>
       {/* Desktop Menu */}
       <ul className="hidden items-center gap-4 sm:flex">
@@ -32,7 +41,7 @@ const Header = ({user}) => {
             aria-controls="userMenu"
           >
             <img
-              src="https://penguinui.s3.amazonaws.com/component-assets/avatar-8.webp"
+              src={user.profilePicture}
               alt="User Profile"
               className="size-10 rounded-full object-cover"
             />
@@ -59,8 +68,10 @@ const Header = ({user}) => {
             >
               <li className="border-b border-slate-300 dark:border-slate-700">
                 <div className="flex flex-col px-4 py-2">
-                  <span className="text-sm font-medium text-black dark:text-white">Alice Brown</span>
-                  <p className="text-xs text-slate-700 dark:text-slate-300">alice.brown@gmail.com</p>
+                  <span className="text-sm font-medium text-black dark:text-white">{user.username}</span>
+                  <p className="text-xs text-slate-700 dark:text-slate-300 truncate " title={user.email}>
+                    {user.email}
+                  </p>
                 </div>
               </li>
               <li>
@@ -89,8 +100,8 @@ const Header = ({user}) => {
               </li>
               <li>
                 <a
-                  href="#"
                   className="block bg-slate-100 px-4 py-2 text-sm text-slate-700 hover:bg-slate-800/5 hover:text-black focus-visible:bg-slate-800/10 focus-visible:text-black focus-visible:outline-none dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-100/5 dark:hover:text-white dark:focus-visible:bg-slate-100/10 dark:focus-visible:text-white"
+                  onClick={logout}
                 >
                   Sign Out
                 </a>
@@ -157,7 +168,7 @@ const Header = ({user}) => {
                 className="size-12 rounded-full object-cover"
               />
               <div>
-                <span className="font-medium text-black dark:text-white">Alice Brown</span>
+                <span className="font-medium text-black dark:text-white">{user.username}</span>
                 <p className="text-sm text-slate-700 dark:text-slate-300">alice.brown@gmail.com</p>
               </div>
             </div>

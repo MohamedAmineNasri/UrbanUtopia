@@ -17,19 +17,31 @@ router.get("/login/success", (req, res) => {
             success: true,
             message: "successful",
             user: req.user,
-            // cookies: req.cookies
+        });
+    } else {
+        res.status(401).json({
+            success: false,
+            message: "User not authenticated",
         });
     }
 });
 
-router.get('/logout', (req, res) => {
-    req.logout((err) => {
-        if (err) {
-            return next(err);
-        }
-        res.redirect(CLIENT_URL);
-    });
+const CLIENT_URL_LOGIN = 'http://localhost:5173/login';
+
+router.get('/logout', async (req, res, next) => {
+    try {
+        await req.logout();
+        req.session = null;
+        res.clearCookie('connect.sid');
+        res.clearCookie('connect.sid.sig');
+        return res.status(200).send('Logged out');
+    } catch (err) {
+        next(err);
+    }
 });
+
+
+
 
 // Google OAuth login route
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));

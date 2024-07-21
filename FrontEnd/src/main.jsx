@@ -7,9 +7,9 @@ import HouseContextProvider from './components/HouseContext.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <HouseContextProvider >
     <Router>
-      <React.StrictMode>
+      {/* <React.StrictMode> */}
         <App />
-      </React.StrictMode>
+      {/* </React.StrictMode> */}
     </Router>
   </HouseContextProvider>
 )
