@@ -8,7 +8,7 @@ import PropertyDetails from "./pages/PropertyDetails"
 import Login from './pages/Login'
 import SignUp from './pages/SignUp'
 const App = () => {
-  const user = true
+  const user = false
   return (
     <div className='max-w-[1440px] mx-auto bg-white'>
       <Header user={user}/> 

@@ -12,11 +12,10 @@ const app = express();
 // Middleware setup
 app.use(
   session({
-    name: 'session',
     secret: 'UrbanUtopia', // Change to secure random strings in production
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 24 * 60 * 60 * 1000 } // 24 hours 
+    cookie: { maxAge: 24 * 60 * 60 * 1000 } // 24 hours
   })
 );
 

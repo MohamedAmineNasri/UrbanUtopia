@@ -15,8 +15,9 @@ router.get("/login/success", (req, res) => {
     if (req.user) {
         res.status(200).json({
             success: true,
-            message: "successful", 
+            message: "successful",
             user: req.user,
+            // cookies: req.cookies
         });
     }
 });
@@ -37,6 +38,7 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 router.get('/google/callback', 
     passport.authenticate('google', { failureRedirect: CLIENT_URL_FAILED }),
     (req, res) => {
+        // Successful authentication, redirect home.
         res.redirect(CLIENT_URL);
     }
 );
@@ -48,6 +50,7 @@ router.get('/github', passport.authenticate('github', { scope: ['user:email'] })
 router.get('/github/callback', 
     passport.authenticate('github', { failureRedirect: CLIENT_URL_FAILED }),
     (req, res) => {
+        // Successful authentication, redirect home.
         res.redirect(CLIENT_URL);
     }
 );
@@ -59,6 +62,7 @@ router.get('/facebook', passport.authenticate('facebook', { scope: ['email'] }))
 router.get('/facebook/callback', 
     passport.authenticate('facebook', { failureRedirect: CLIENT_URL_FAILED }),
     (req, res) => {
+        // Successful authentication, redirect home.
         res.redirect(CLIENT_URL);
     }
 );
