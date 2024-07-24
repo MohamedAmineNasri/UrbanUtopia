@@ -9,6 +9,8 @@ require('./passport'); // Import Passport configuration here
 
 const app = express();
 
+app.use(express.json())
+
 // Middleware setup
 app.use(
   session({
@@ -32,6 +34,7 @@ app.use(cors({
 
 // Routes setup
 app.use('/auth', require('./routes/authRoutes'));
+app.use('/properties', require('./Routes/propertyRoutes'));
 
 // Start server only after MongoDB connection is established
 mongoose.connection.once('open', () => {

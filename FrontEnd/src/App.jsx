@@ -10,6 +10,7 @@ import SignUp from './pages/SignUp'
 import { useEffect } from 'react'
 import axios from "axios"
 import { useState } from 'react'
+import PropertyAddPage from './pages/PropertyAddPage'
 const App = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -48,6 +49,8 @@ const App = () => {
         <Route path='/property/:id' element={<PropertyDetails />}/>
         <Route path='/login' element={user ? <Navigate to='/'/> : <Login />}/>
         <Route path='/signup' element={user ? <Navigate to='/'/> :<SignUp />}/>
+        {/* <Route path='/create-property' element={user ? <Navigate to='/'/> :<PropertyAddPage />}/> */}
+        <Route path='/create-property' element={<PropertyAddPage />}/>
       </Routes>
       <Footer /> 
     </div>
