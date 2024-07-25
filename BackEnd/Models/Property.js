@@ -1,20 +1,20 @@
 const mongoose = require('mongoose')
 
 const propertySchema = new mongoose.Schema({
-    type: {type: String, requried:true},
-    name: {type: String, requried:true},
-    description: {type: String, requried:true},
-    imagethumbnail: {type: String, requried:true},
-    imageLg: {type: String, requried:true},
-    country: {type: String, requried:true},
-    address: {type: String, requried:true},
-    bedrooms: {type: String, requried:true},
-    bathrooms: {type: String, requried:true},
-    surface: {type: String, requried:true},
-    year: {type: String, requried:true},
-    price: {type: String, requried:true},
-    agentName: {type: String, requried:true},
-    agentPhone: {type: String, requried:true},
-    agentImage: {type: String, requried:true},
-})
-module.exports = mongoose.model('Property', propertySchema)
+    type: {type: String, required:true},
+    name: {type: String, required:true},
+    description: {type: String, required:true},
+    imagethumbnail: {type: String},
+    imageLg: {type: String},
+    country: {type: String, required:true},
+    address: {type: String, required:true}, // Remove if not used
+    bedrooms: {type: String, required:true},
+    bathrooms: {type: String, required:true},
+    surface: {type: String, required:true},
+    year: {type: String, required:true},
+    price: {type: String, required:true},
+    agentName: {type: String, required:true},
+    agentPhone: {type: String, required:true},
+});
+
+module.exports = mongoose.model('Property', propertySchema) 

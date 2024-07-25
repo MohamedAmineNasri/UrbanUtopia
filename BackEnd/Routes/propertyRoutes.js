@@ -1,8 +1,9 @@
 const router = require('express').Router();
 const propertyController = require('../Controllers/propertyController')
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
-
-router.post('/', propertyController.createProperty)
+router.post('/', upload.fields([{ name: 'imagethumbnail', maxCount: 1 }, { name: 'imageLg', maxCount: 1 }]), propertyController.createProperty);
 
 router.get('/', propertyController.getAllProperties)
 
@@ -12,4 +13,4 @@ router.put('/:id', propertyController.updatePropertyById)
 
 router.delete('/:id', propertyController.deletePropertyById)
 
-module.exports = router
+module.exports = router 
