@@ -38,7 +38,7 @@ const PropertyAddPage = () => {
   useEffect(() => {
     if (selectedCountry?.label) {
       const countryName = selectedCountry.label.split(' ')[1];
-      console.log(countryName); // This will print "Tunisia"
+      console.log(countryName); 
       setPropertyDetails(prevDetails => ({
         ...prevDetails,
         country: countryName,
@@ -156,13 +156,16 @@ const PropertyAddPage = () => {
             )}
             <input type="file" name="imageLg" className='hidden' onChange={handleFileChange} />
           </label>
-          <Select
-            name="country"
-            className='border border-gray-300 focus:border-violet-700 outline-none rounded-full px-4 h-14 text-sm'
-            options={countries}
-            value={selectedCountry}
-            onChange={handleCountryChange}
-          />
+          <div className='flex justify-center items-center border border-gray-300 focus-within:border-violet-700 outline-none rounded-full px-4 h-14 text-sm w-full'>
+            <Select
+              name="country"
+              className="outline-none text-sm w-full"
+              options={countries}
+              value={selectedCountry}
+              onChange={handleCountryChange}
+            />
+          </div>
+
           <input
             type="text"
             name="address"

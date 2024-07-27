@@ -4,6 +4,9 @@ const passport = require('passport');
 const CLIENT_URL = 'http://localhost:5173/';
 const CLIENT_URL_FAILED = 'http://localhost:5173/login';
 
+
+
+
 router.get("/login/failed", (req, res) => {
     res.status(401).json({
         success: false,
