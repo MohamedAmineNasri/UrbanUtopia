@@ -1,22 +1,74 @@
 import { FaRegEye, FaGoogle  } from "react-icons/fa";
 import cover_image from '../assets/img/houses/InteriorWallColors.jfif'
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 const Login = () => {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const navigate = useNavigate()
+
+    //Function to initiate Google login
     const google = () => {
         window.open('http://localhost:5000/auth/google','_self')
     }
+
+    //Capture the token form the Url
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search)
+        const token =  urlParams.get('token')
+
+        if( token ) {
+            localStorage.setItem('jwt', token)
+            navigate('/')
+        }
+    }, [navigate])
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        try {
+            const respone = await axios.post('http://localhost:5000/auth/login', { email, password })
+            if( respone.status === 200 ) {
+                localStorage.setItem('jwt', respone.data.token)
+                navigate('/')
+            } else {
+                alert('Login failed!')
+            }
+        } catch (error) {
+            console.error('Error logging in:', error)
+            alert('Login failed!')
+        }
+    }
+
     return (
         <section className="bg-gray-50 min-h-screen flex items-center justify-center ">
                 <div className='bg-gray-100 flex rounded-2xl shadow-lg max-w-5xl p-5 items-center mb-20'>
                     <div className='md:w-1/2 px-16'>
                         <h2 className='font-bold text-2xl text-violet-500'>Login</h2>
                         <p className='text-sm mt-4 text-violet-500'>If you are already a member, easily log in</p>
-                        <form action='' className='flex flex-col gap-4 '>
-                            <input type="text" className='p-2 mt-8 rounded-xl border' name='email' placeholder='Email' />
+                        <form onSubmit={handleSubmit} className='flex flex-col gap-4 '>
+                            <input 
+                                type="email" 
+                                className='p-2 mt-8 rounded-xl border' 
+                                name='email' 
+                                placeholder='Email' 
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
                             <div className='relative'>
-                                <input type="password" className='p-2 mt-8 rounded-xl border w-full' name='password' placeholder='Password' />
+                                <input 
+                                    type="password" 
+                                    className='p-2 mt-8 rounded-xl border w-full' 
+                                    name='password' 
+                                    placeholder='Password'
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
                                 <FaRegEye className="absolute top-1/2  right-2 translate-y-1/2 text-gray-500" />
                             </div>
-                            <button className='bg-violet-700 text-white py-2 rounded-xl hover:scale-105 duration-300'>Login</button>
+                            <button type="submit" className='bg-violet-700 text-white py-2 rounded-xl hover:scale-105 duration-300'>Login</button>
                         </form>
 
                         <div className='mt-10 grid grid-cols-3 items-center text-gray-400'>

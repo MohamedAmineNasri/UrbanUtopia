@@ -9,7 +9,6 @@ require('./passport'); // Import Passport configuration here
 
 const app = express();
 
-app.use(express.json())
 
 // Middleware setup
 app.use(
@@ -18,20 +17,20 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 24 * 60 * 60 * 1000 } // 24 hours
-  })
-)
-
-// Initialize Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
-
-// CORS setup
+    })
+    )
+    
 app.use(cors({
   origin: 'http://localhost:5173',
   methods: "GET,POST,PUT,DELETE",
   credentials: true,
 }));
 
+app.use(express.json());
+app.use(passport.initialize());
+app.use(passport.session());
+
+      
 // Routes setup
 app.use('/auth', require('./routes/authRoutes'));
 app.use('/properties', require('./Routes/propertyRoutes'));

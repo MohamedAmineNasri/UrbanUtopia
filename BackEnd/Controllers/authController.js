@@ -3,6 +3,8 @@ const passport = require('passport');
 
 const CLIENT_URL = "http://localhost:5173/";
 
+
+
 router.get("/login/success", (req, res) => {
   if (req.user) {
     res.status(200).json({
