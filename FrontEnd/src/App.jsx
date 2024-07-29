@@ -22,6 +22,11 @@ const App = () => {
         });
         if (response.status === 200) {
           setUser(response.data.user);
+          // Check if the page has already been reloaded
+          if (!localStorage.getItem('reloaded')) {
+            localStorage.setItem('reloaded', 'true');
+            window.location.reload();
+          }
         } else {
           throw new Error('Authentication has failed!');
         }

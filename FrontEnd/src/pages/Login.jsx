@@ -1,9 +1,10 @@
-import { FaRegEye, FaGoogle  } from "react-icons/fa";
+import { FaRegEye  } from "react-icons/fa";
 import cover_image from '../assets/img/houses/InteriorWallColors.jfif'
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 const Login = () => {
+    console.log("Login component rendered");
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
@@ -12,17 +13,21 @@ const Login = () => {
     const google = () => {
         window.open('http://localhost:5000/auth/google','_self')
     }
-
-    //Capture the token form the Url
     useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search)
-        const token =  urlParams.get('token')
-
-        if( token ) {
-            localStorage.setItem('jwt', token)
-            navigate('/')
+        console.log("useEffect triggered");
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        console.log('Token from URL:', token);
+    
+        if (token) {
+            localStorage.setItem('jwt', token);
+            axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            navigate('/');
         }
-    }, [navigate])
+    }, [navigate]);
+    
+    
+    
 
     const handleSubmit = async (event) => {
         event.preventDefault()
@@ -30,7 +35,9 @@ const Login = () => {
             const respone = await axios.post('http://localhost:5000/auth/login', { email, password })
             if( respone.status === 200 ) {
                 localStorage.setItem('jwt', respone.data.token)
+                localStorage.setItem('user', JSON.stringify(respone.data.user))
                 navigate('/')
+                window.location.reload()
             } else {
                 alert('Login failed!')
             }

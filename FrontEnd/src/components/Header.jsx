@@ -1,15 +1,31 @@
 
 import {Link} from 'react-router-dom'
 import Logo from '../assets/img/logo.svg'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Transition } from '@headlessui/react';
 import axios from "axios"
 
 
-const Header = ({user}) => {
+const Header = () => {
+  const [user, setUser] = useState(null)
+  const [userDropDownIsOpen, setUserDropDownIsOpen] = useState(false);
+  const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
+
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user'))
+    if (storedUser) {
+      setUser(storedUser)
+    }
+  }, [])
+
+
   const logout = async () => {
     try {
       await axios.get('http://localhost:5000/auth/logout', { withCredentials: true });
+      localStorage.removeItem('jwt')
+      localStorage.removeItem('user')
+      localStorage.removeItem('reloaded');
       window.location.reload();
     } catch (error) {
       console.error('Error logging out:', error);
@@ -17,8 +33,7 @@ const Header = ({user}) => {
   };
   
 
-  const [userDropDownIsOpen, setUserDropDownIsOpen] = useState(false);
-  const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
+
   return (
     <header className='py-6 mb-12 border-b'>
       <div className="container mx-auto flex justify-between items-center">
@@ -40,11 +55,21 @@ const Header = ({user}) => {
             className="rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700 dark:focus-visible:outline-blue-600"
             aria-controls="userMenu"
           >
-            <img
-              src={user.profilePicture}
-              alt="User Profile"
-              className="size-10 rounded-full object-cover"
-            />
+            {
+              user.profilePicture ? (
+                <img
+                  src={user.profilePicture}
+                  alt="User Profile"
+                  className="size-10 rounded-full object-cover"
+                />
+              ) : (
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQA9j-C3_YS7NAVZT4572tFatGX80YHRePaPNUnbLmlRWrSPgeqbeaj1mMd0F5IgW_G8_A"
+                  alt="User Profile"
+                  className="size-10 rounded-full object-cover"
+                />
+              )
+            }
           </button>
           {/* User Dropdown */}
           <Transition

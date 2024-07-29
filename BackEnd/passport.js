@@ -12,7 +12,7 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: "/auth/google/callback",
     },
-    async function (accessToken, refreshToken, profile, done) {
+    async (accessToken, refreshToken, profile, done) => {
       try {
         let user = await User.findOne({ googleId: profile.id });
 
@@ -28,12 +28,6 @@ passport.use(
           });
           await user.save();
         }
-
-        //Generate JWT
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
-
-        //Attach token to the user object
-        user.token = token 
 
         return done(null, user);
       } catch (err) {

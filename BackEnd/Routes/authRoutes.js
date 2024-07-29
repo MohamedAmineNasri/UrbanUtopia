@@ -111,15 +111,15 @@ router.get('/logout', async (req, res, next) => {
 // Google OAuth login route
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-// Google OAuth callback route
-router.get('/google/callback', 
+router.get('/google/callback',
     passport.authenticate('google', { failureRedirect: CLIENT_URL_FAILED }),
-    (req, res) => {
-        // Successful authentication, generate JWT and redirect
-        const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1h'})
-        res.redirect(`${CLIENT_URL}?token=?{token}`);
+    async (req, res) => {
+    const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    res.redirect(`${CLIENT_URL}?token=${token}&user=${JSON.stringify(req.user)}`);
     }
 );
+
+
 
 // GitHub OAuth login route
 router.get('/github', passport.authenticate('github', { scope: ['user:email'] }));
