@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const PropertyAddPage = () => {
   const [propertyDetails, setPropertyDetails] = useState({
@@ -25,6 +27,14 @@ const PropertyAddPage = () => {
   const [selectedCountry, setSelectedCountry] = useState(null);
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.username) {
+      setPropertyDetails(prevDetails => ({
+        ...prevDetails,
+        agentName: user.username,
+      }));
+    }
+
     fetch(
       "https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code"
     )
@@ -38,7 +48,6 @@ const PropertyAddPage = () => {
   useEffect(() => {
     if (selectedCountry?.label) {
       const countryName = selectedCountry.label.split(' ')[1];
-      console.log(countryName); 
       setPropertyDetails(prevDetails => ({
         ...prevDetails,
         country: countryName,
@@ -62,7 +71,6 @@ const PropertyAddPage = () => {
       [name]: file,
     }));
 
-    // Create image preview
     const reader = new FileReader();
     reader.onloadend = () => {
       if (name === 'imagethumbnail') {
@@ -89,15 +97,37 @@ const PropertyAddPage = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Property details submitted:', response.data);
+      toast.success('Property added successfully!');
     } catch (error) {
-      console.error('Error submitting property details:', error.response ? error.response.data : error.message);
+      toast.error('Error submitting property details!');
     }
   };
   
   const handleCountryChange = (selectedCountry) => {
     setSelectedCountry(selectedCountry);
   };
+  const handleClear = () => {
+    setPropertyDetails({
+      type: '',
+      name: '',
+      description: '',
+      imagethumbnail: null,
+      imageLg: null,
+      country: '',
+      address: '',
+      bedrooms: '',
+      bathrooms: '',
+      surface: '',
+      year: '',
+      price: '',
+      agentName: '',
+      agentPhone: '',
+    });
+    setThumbnailPreview('');
+    setImageLgPreview('');
+    setSelectedCountry(null);
+  };
+  
 
   return (
     <div className='container mx-auto min-h-[1500px]'>
@@ -156,16 +186,12 @@ const PropertyAddPage = () => {
             )}
             <input type="file" name="imageLg" className='hidden' onChange={handleFileChange} />
           </label>
-          <div className='flex justify-center items-center border border-gray-300 focus-within:border-violet-700 outline-none rounded-full px-4 h-14 text-sm w-full'>
-            <Select
-              name="country"
-              className="outline-none text-sm w-full"
-              options={countries}
-              value={selectedCountry}
-              onChange={handleCountryChange}
-            />
-          </div>
-
+          <Select
+            options={countries}
+            placeholder="Select a country"
+            value={selectedCountry}
+            onChange={handleCountryChange}
+          />
           <input
             type="text"
             name="address"
@@ -216,23 +242,23 @@ const PropertyAddPage = () => {
           />
           <input
             type="text"
-            name="agentName"
-            placeholder='Agent Name'
-            className='border border-gray-300 focus:border-violet-700 outline-none rounded-full px-4 h-14 text-sm'
-            value={propertyDetails.agentName}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
             name="agentPhone"
             placeholder='Agent Phone'
             className='border border-gray-300 focus:border-violet-700 outline-none rounded-full px-4 h-14 text-sm'
             value={propertyDetails.agentPhone}
             onChange={handleChange}
           />
-          <button type="submit" className='bg-violet-700 hover:bg-violet-800 text-white px-4 py-2 rounded-full'>Add Property</button>
+            <div className='flex gap-x-2'>
+              <button className='bg-gray-200 text-gray-500 px-6 py-3 rounded text-sm w-full' type='button' onClick={handleClear}>
+                Reset
+              </button>
+              <button className='bg-violet-700 hover:bg-violet-800 text-white px-6 py-3 rounded text-sm w-full transition' type='submit'>
+                Add property
+              </button>
+            </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };
